@@ -1,4 +1,4 @@
-import { Drawer, styled } from "@mui/material";
+import { Drawer } from "@mui/material";
 import React from "react";
 import SideBarContent from "./SideBarContent";
 
