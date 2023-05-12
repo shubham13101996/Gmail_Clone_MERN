@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
 const dialogStyle = {
   height: "95%",
@@ -56,13 +56,39 @@ const SendButton = styled(Button)({
   borderRadius: 18,
 });
 const ComposeMail = ({ openDialog, setOpenDialog }) => {
+  const [data, setData] = useState({});
+  const config = {
+    Host: process.env.REACT_APP_HOST,
+    Username: process.env.REACT_APP_USERNAME,
+    Password: process.env.REACT_APP_PASSWORD,
+    port: process.env.REACT_APP_PORT,
+  };
   const closeComposeMail = (e) => {
     e.preventDefault();
     setOpenDialog(false);
   };
 
-  const sendMail = () => {
+  const sendMail = (e) => {
+    e.preventDefault();
+    if (window.Email) {
+      window.Email.send({
+        ...config,
+        To: data.to,
+        From: "shubham.pathak926@gmail.com",
+        Subject: data.subject,
+        Body: data.body,
+      })
+        .then((message) => alert(message))
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+
     setOpenDialog(false);
+  };
+
+  const onValueChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
   };
   return (
     <Dialog open={openDialog} PaperProps={{ sx: dialogStyle }}>
@@ -75,13 +101,23 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
         />
       </Header>
       <RecipientWrapper>
-        <InputBase placeholder="Recipients" />
-        <InputBase placeholder="Subject" />
+        <InputBase
+          placeholder="Recipients"
+          name="to"
+          onChange={(e) => onValueChange(e)}
+        />
+        <InputBase
+          placeholder="Subject"
+          name="subject"
+          onChange={(e) => onValueChange(e)}
+        />
       </RecipientWrapper>
 
       <TextField
         multiline
         rows={18}
+        onChange={(e) => onValueChange(e)}
+        name="body"
         sx={{
           "& .MuiOutlinedInput-notchedOutline": {
             border: "none",
@@ -89,7 +125,7 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
         }}
       />
       <Footer>
-        <SendButton onClick={() => sendMail()}>Send</SendButton>
+        <SendButton onClick={(e) => sendMail(e)}>Send</SendButton>
         <DeleteOutline
           onClick={() => setOpenDialog(false)}
           style={{ cursor: "pointer" }}
