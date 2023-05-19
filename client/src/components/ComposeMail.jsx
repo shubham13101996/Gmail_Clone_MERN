@@ -9,6 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import useApi from "../hooks/useApi";
+import { API_URLS } from "../services/api.urls";
 
 const dialogStyle = {
   height: "95%",
@@ -57,6 +59,8 @@ const SendButton = styled(Button)({
 });
 const ComposeMail = ({ openDialog, setOpenDialog }) => {
   const [data, setData] = useState({});
+
+  const sentEmailService =  useApi(API_URLS.saveSentEmail)
   const config = {
     Host: process.env.REACT_APP_HOST,
     Username: process.env.REACT_APP_USERNAME,
@@ -84,6 +88,24 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
         });
     }
 
+    const payload = {
+to :data.to,
+from: "shubham.pathak926@gmail",
+subject : data.subject,
+body:data.body,
+data: new Date(),
+image:"",
+name:"master_shubham",
+starred : false,
+type:'sent',
+    }
+sentEmailService.call(payload)
+if(!sentEmailService.error){
+  setOpenDialog(false);
+  setData({})
+}else{
+  
+}
     setOpenDialog(false);
   };
 
