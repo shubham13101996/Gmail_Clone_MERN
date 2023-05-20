@@ -4,6 +4,8 @@ import { Box, Button, List, ListItem } from "@mui/material";
 import React, { useState } from "react";
 import { SIDEBAR_DATA } from "../config/sidebar.config";
 import ComposeMail from "./ComposeMail";
+import { NavLink, useParams } from "react-router-dom";
+import { routes } from "../routes/routes";
 
 const ComposeButtonWrapper = styled(Button)({
   background: "#c2e7ff",
@@ -21,13 +23,19 @@ const Container = styled(Box)({
     fontSize: 14,
     fontWeight: 600,
     cursor: "pointer",
+    "& > a": {
+      textDecoration: "none",
+      color: "inherit",
+    },
   },
-  "& > ul > li >svg": {
+  "& > ul > a > li >svg": {
     marginRight: 20,
   },
 });
 const SideBarContent = () => {
   const [openDialog, setOpenDialog] = useState(false);
+
+  const { type } = useParams();
   const onComposeClick = () => {
     setOpenDialog(true);
   };
@@ -39,11 +47,18 @@ const SideBarContent = () => {
 
       <List>
         {SIDEBAR_DATA.map((data) => (
-          <ListItem>
-            {" "}
-            <data.icon fontSize="small" />
-            {data.title}{" "}
-          </ListItem>
+          <NavLink key={data.name} to={`${routes.emails.path}/${data.name}`}>
+            <ListItem
+              style={
+                type === data.name.toLowerCase()
+                  ? { background: "#d3e3fd", borderRadius: "0 16px 16px 0" }
+                  : {}
+              }>
+              {" "}
+              <data.icon fontSize="small" />
+              {data.title}{" "}
+            </ListItem>
+          </NavLink>
         ))}
       </List>
       <ComposeMail openDialog={openDialog} setOpenDialog={setOpenDialog} />
