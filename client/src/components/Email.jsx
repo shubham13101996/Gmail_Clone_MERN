@@ -6,9 +6,9 @@ import { API_URLS } from "../services/api.urls";
 const Email = () => {
   const { openDrawer } = useOutletContext();
   const { type } = useParams();
-  const getEmailService = useApi(API_URLS.getEmailFromType);
+  const getEmailsService = useApi(API_URLS.getEmailFromType);
   useEffect(() => {
-    getEmailService.call({}, type);
+    getEmailsService.call({}, type);
   }, [type]);
   return (
     <div
