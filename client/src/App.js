@@ -1,11 +1,49 @@
-import React from "react";
-import Main from "./pages/Main";
+import React, { Suspense, lazy } from "react";
+import {
+  Navigate,
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+import { routes } from "./routes/routes";
+const ErrorComponent = lazy(() => import("./components/common/ErrorComponent"));
 
+import SuspenseLoader from "./components/common/SuspenseLoader";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route>
+      <Route
+        path={routes.main.path}
+        element={<Navigate to={`${routes.emails.path}/inbox`} />}
+      />
+
+      <Route path={routes.main.path} element={<routes.main.element />}>
+        <Route
+          path={`${routes.emails.path}/:type`}
+          errorElement={<ErrorComponent />}
+          element={<routes.emails.element />}
+        />
+        <Route
+          path={routes.view.path}
+          errorElement={<ErrorComponent />}
+          element={<routes.view.element />}
+        />
+      </Route>
+
+      <Route
+        path={routes.invalid.path}
+        element={<Navigate to={`${routes.emails.path}/inbox`} />}
+      />
+    </Route>
+  )
+);
 const App = () => {
   return (
-    <div>
-      <Main />
-    </div>
+    <Suspense fallback={<SuspenseLoader />}>
+      <RouterProvider router={router} />
+    </Suspense>
   );
 };
 
