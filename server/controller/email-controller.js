@@ -16,10 +16,11 @@ export const saveSentEmails = (req, res) => {
 export const getEmails = async (req, res) => {
   try {
     let emails;
-    if (req.params.type === "sent") {
+    if (false) {
+    } else {
       emails = await Email.find({ type: req.params.type });
     }
-    res.status(200).json(emails);
+    return res.status(200).json(emails);
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);
