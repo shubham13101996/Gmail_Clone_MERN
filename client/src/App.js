@@ -7,9 +7,12 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import { routes } from "./routes/routes";
+import SuspenseLoader from "./components/common/SuspenseLoader";
+
+
 const ErrorComponent = lazy(() => import("./components/common/ErrorComponent"));
 
-import SuspenseLoader from "./components/common/SuspenseLoader";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
