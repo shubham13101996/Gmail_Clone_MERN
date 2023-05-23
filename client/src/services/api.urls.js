@@ -11,4 +11,8 @@ export const API_URLS = {
     method: "POST",
     endpoint: "save-draft",
   },
+  moveEmailsToBin: {
+    method: "POST",
+    endpoint: "bin",
+  },
 };
