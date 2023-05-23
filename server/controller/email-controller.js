@@ -20,6 +20,8 @@ export const getEmails = async (req, res) => {
       emails = await Email.find({ bin: true });
     } else if (req.params.type === "allmail") {
       emails = await Email.find({});
+    } else if (req.params.type === "starred") {
+      emails = await Email.find({ starred: true, bin: false });
     } else {
       emails = await Email.find({ type: req.params.type });
     }
@@ -37,6 +39,19 @@ export const moveEmailsToBin = async (req, res) => {
       { $set: { bin: true, starred: false, type: "" } }
     );
     return res.status(200).json({ message: "email deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+};
+
+export const toggleStarredMails = async (req, res) => {
+  try {
+    await Email.updateOne(
+      { id: req.body.id },
+      { $set: { starred: req.body.value } }
+    );
+    res.status(200).json("email is mark starred");
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);

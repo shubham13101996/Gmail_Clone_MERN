@@ -6,7 +6,8 @@ import { Box, Checkbox, List } from "@mui/material";
 import { Calculate, DeleteOutline } from "@mui/icons-material";
 import EmailView from "./EmailView";
 import { API_URLS } from "./../services/api.urls";
-
+import NoMails from "./common/NoMails";
+import { EMPTY_TABS } from "../constant/contants";
 const Email = () => {
   const [selectedEmails, setSelectedEmails] = useState([]);
   cpnst[(refreshScreen, setRefreshScreen)] = useState(false);
@@ -61,9 +62,14 @@ const Email = () => {
             key={email._id}
             email={email}
             selectedEmails={selectedEmails}
+            setRefreshScreen={setRefreshScreen}
           />
         ))}
       </List>
+
+      {getEmailsService?.response?.length === 0 && (
+        <NoMails message={EMPTY_TABS[type]} />
+      )}
     </Box>
   );
 };
