@@ -19,4 +19,8 @@ export const API_URLS = {
     method: "POST",
     endpointL: "starred",
   },
+  deleteEmails: {
+    method: "DELETE",
+    endpoint: "delete",
+  },
 };

@@ -51,7 +51,17 @@ export const toggleStarredMails = async (req, res) => {
       { id: req.body.id },
       { $set: { starred: req.body.value } }
     );
-    res.status(200).json("email is mark starred");
+    return res.status(200).json("email is mark starred");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error.message);
+  }
+};
+
+export const deleteEmails = async (req, res) => {
+  try {
+    await Email.deleteMany({ _id: { $in: req.body } });
+    return res.status(200).json("email deleted successfully");
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);

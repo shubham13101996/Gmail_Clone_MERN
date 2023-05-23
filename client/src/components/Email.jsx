@@ -10,11 +10,12 @@ import NoMails from "./common/NoMails";
 import { EMPTY_TABS } from "../constant/contants";
 const Email = () => {
   const [selectedEmails, setSelectedEmails] = useState([]);
-  cpnst[(refreshScreen, setRefreshScreen)] = useState(false);
+  const [refreshScreen, setRefreshScreen] = useState(false);
   const { openDrawer } = useOutletContext();
   const { type } = useParams();
   const getEmailsService = useApi(API_URLS.getEmailFromType);
   const moveEmailsToBinService = useApi(API_URLS.moveEmailsToBin);
+  const deleteMailsService = useApi(API_URLS.deleteEmails);
   useEffect(() => {
     getEmailsService.call({}, type);
   }, [type, refreshScreen]);
@@ -30,6 +31,7 @@ const Email = () => {
 
   const deleteSelectedEmails = () => {
     if (type === "bin") {
+      deleteMailsService.call(selectedEmails);
     } else {
       moveEmailsToBinService.call(selectedEmails);
     }
@@ -63,6 +65,7 @@ const Email = () => {
             email={email}
             selectedEmails={selectedEmails}
             setRefreshScreen={setRefreshScreen}
+            setSelectedEmails={setSelectedEmails}
           />
         ))}
       </List>

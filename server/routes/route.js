@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  deleteEmails,
   getEmails,
   moveEmailsToBin,
   saveSentEmails,
@@ -11,4 +12,5 @@ routes.get("/emails/:type", getEmails);
 routes.post("/save-draft", saveSentEmails);
 routes.post("/bin", moveEmailsToBin);
 routes.post("/starred", toggleStarredMails);
+routes.delete("/delete", deleteEmails);
 export default routes;
